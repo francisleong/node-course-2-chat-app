@@ -16,13 +16,24 @@ const users = new Users();
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
-  console.log('New user connected');
+
+  socket.on('getRooms', (callback) => {
+    const activeRooms = users.getRoomList();
+    callback(activeRooms);
+  });
 
   socket.on('join', (params, callback) => {
     if (!isRealString(params.name) || !isRealString(params.room)) {
       return callback('Name and room name are required.');
     }
 
+    // Case-insensitive rooms
+    params.room = params.room.toLowerCase();
+
+    if (users.getUserList(params.room).indexOf(params.name) != -1) {
+      return callback('There is already someone with that username in the room!');
+    }
+    
     socket.join(params.room);
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name, params.room);

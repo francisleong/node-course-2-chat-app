@@ -19,14 +19,22 @@
         <input type="text" name="name" autofocus/>
       </div>
       <div class="form-field">
-        <label>Room name</label>
-        <input type="text" name="room"/>
+        <label>Enter a room name</label>
+        <input list="room" name="room" autocomplete="off"/>
+        <datalist id="room">
+          
+        </datalist>
       </div>
+
       <div class="form-field">
         <button>Join</button>
       </div>
     </form>
   </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/libs/index.js"></script>
+  <script src="/js/index.js"></script>
 </body>
 
 </html>
